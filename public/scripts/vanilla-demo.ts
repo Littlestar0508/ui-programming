@@ -9,6 +9,10 @@ const greetingList = Object.values(Greeting); // values
 const greetingKeyLst = Object.keys(Greeting); // keys
 const greetingEntryList = Object.entries(Greeting); // [[key,value] , ...]
 
+/* -------------------------------------------------------------------------- */
+/*                            Creating Element Node                           */
+/* -------------------------------------------------------------------------- */
+
 // 제어 대상 참조X -> 생성
 // const heading = document.querySelector("h1");
 const heading = document.createElement("h1");
@@ -19,6 +23,11 @@ heading.textContent = greetingList.at(0) as string;
 const changeButton = document.createElement("button");
 changeButton.setAttribute("type", "button");
 changeButton.textContent = "인사말";
+
+console.group("DOM 요소 노드");
+console.dir(heading);
+console.dir(changeButton);
+console.groupEnd();
 
 // 버튼에 이벤트 바인딩
 changeButton?.addEventListener("click", handleChangeGreetMessage);
