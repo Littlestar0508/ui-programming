@@ -10,7 +10,7 @@ body {
   }
 }
 
-#app {
+.app {
   display: flex;
   flex-flow: column wrap;
   justify-content: center;
@@ -25,7 +25,7 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
-  
+
   button {
     cursor: pointer;
     padding: 0.4em 1.2em;
@@ -36,7 +36,7 @@ body {
     font-size: 3dvw;
     background: linear-gradient(0deg, white, white) padding-box,
       linear-gradient(45deg, var(--primary-color), var(--secondary-color) 80%) border-box;
-  
+
     &:focus-visible {
       outline: 2px solid var(--secondary-color);
       outline-offset: 1px;
