@@ -10,7 +10,9 @@ interface BoxProps {
   className?: string;
 }
 
-function Box({ children, size, style, className = "" }: BoxProps) {
+function Box({ children, size, style, className = "", ...restProps }: BoxProps) {
+  console.log(restProps);
+
   let sizeClassName = "";
   if (size) {
     sizeClassName = `box--${size}`;
@@ -27,6 +29,7 @@ function Box({ children, size, style, className = "" }: BoxProps) {
         color: "white",
         ...style,
       },
+      ...restProps, // {id, title, translate, 'aria-label'}
     },
     // ...children
     children
