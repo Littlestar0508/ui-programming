@@ -6,8 +6,9 @@ function App() {
     className: "app",
     children: [
       React.createElement(Calculator),
-      React.createElement(Calculator, { elements: [10, 2] }),
-      React.createElement(Calculator, { operator: "+", elements: [10, 2] }),
+      React.createElement(Calculator, { key: "child-2" }),
+      React.createElement(Calculator, { key: "child-3", elements: [, 2] }),
+      React.createElement(Calculator, { key: "child-4", operator: "*", elements: [-12, 2] }),
     ],
   });
 }
