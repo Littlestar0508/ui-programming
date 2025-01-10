@@ -2,7 +2,7 @@
 /*                         Own CreateElement Function                         */
 /* -------------------------------------------------------------------------- */
 
-function createElement(type, props = {}, ...children) {
+function createElements(type, props = {}, ...children) {
   return {
     $$typeof: Symbol("own.element"),
     key: null,
@@ -14,12 +14,12 @@ function createElement(type, props = {}, ...children) {
   };
 }
 
-const ownElement = createElement("div", { id: "own" }, "hello");
-const reactAppElement = createElement("div", { id: "react", className: "app" });
+const ownElement = createElements("div", { id: "own" }, "hello");
+const reactAppElement = createElements("div", { id: "react", className: "app" });
 
 console.group("Own 요소 노드");
 console.log(ownElement);
 console.log(reactAppElement);
 console.groupEnd();
 
-export default createElement;
+export default createElements;
