@@ -31,6 +31,16 @@ function Wrapper() {
     React.Fragment,
     null,
     React.createElement(Heading),
+    React.createElement(ChangeButton),
+    React.createElement(Heading),
+    React.createElement(ChangeButton),
+    React.createElement(Heading),
+    React.createElement(ChangeButton),
+    React.createElement(Heading),
+    React.createElement(ChangeButton),
+    React.createElement(Heading),
+    React.createElement(ChangeButton),
+    React.createElement(Heading),
     React.createElement(ChangeButton)
   );
 }
