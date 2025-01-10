@@ -7,9 +7,9 @@ function App() {
   return h(
     "div",
     { className: "app" },
-    h(Box, null, "기본 박스"),
-    h(Box, null, "작은 박스"),
-    h(Box, null, "큰 박스")
+    h(Box, { className: "box--circle" }, "기본 박스"),
+    h(Box, { size: "small", style: { backgroundColor: "#0388d1" } }, "작은 박스"),
+    h(Box, { size: "big", style: { backgroundColor: "#1ecff6", borderRadius: 20 } }, "큰 박스")
   );
 }
 
