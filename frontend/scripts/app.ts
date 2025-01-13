@@ -1,4 +1,5 @@
 import React from "../lib/react.js";
+import Switch from "../components/switch.ts";
 
 // hyperscript 함수
 // JavaScript 마크업 처리 사용
@@ -16,9 +17,13 @@ function App(): React.ReactNode {
     "div",
     /* 컴포넌트 속성(props, 외부에서 전달되는 데이터) */
     {
+      lang: "en",
       style: appStyles,
-    }
+    },
     /* 컴포넌트의 자식들(children) */
+    h(Switch, { active: true }, "Wi-Fi"),
+    h(Switch, { active: false }, "Bluetooth"),
+    h(Switch, { disabled: true }, "Reduced Motion")
   );
 }
 
