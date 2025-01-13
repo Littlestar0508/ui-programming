@@ -16,12 +16,14 @@ interface SwitchProps {
   disabled?: boolean;
   showOnOffText?: boolean;
   children: React.ReactNode;
+  onToggle?: () => void;
 }
 
 function Switch({
   active = false,
   disabled = false,
   showOnOffText = false,
+  onToggle,
   children,
 }: SwitchProps) {
   let switchText: "ON" | "OFF" | null = !showOnOffText ? null : active ? "ON" : "OFF";
@@ -32,6 +34,17 @@ function Switch({
     switchTextNode = h("span", { className: "Switch--text", "aria-hidden": true }, switchText);
   }
 
+  const handleToggle = () => {
+    if (disabled) return;
+    onToggle?.();
+  };
+
+  const handleKeyControl = (e: KeyboardEvent) => {
+    const key = e.code;
+    const pressedShiftKey = !!e.shiftKey;
+    if (!disabled && !pressedShiftKey && (key === "Space" || key === "Enter")) onToggle?.();
+  };
+
   return h(
     "div",
     {
@@ -40,6 +53,10 @@ function Switch({
       "aria-disabled": disabled,
       tabIndex: 0,
       className: "Switch",
+      // 이벤트 핸들러를 onClick 속성에 연결
+      // 활성상태 또는 비활성 상태에 따라 함수(기능) 작동 여부 조건 처리
+      onClick: handleToggle,
+      onKeyDown: handleKeyControl,
     },
     h("span", { className: "Switch--label" }, children),
     h(
