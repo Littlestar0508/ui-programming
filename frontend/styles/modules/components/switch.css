@@ -18,16 +18,18 @@
   }
 
   .Switch--label {
+    user-select: none;
     color: rgba(0 0 0 / 80%);
     font-size: 1.6rem;
   }
 
-  .Switch-info {
+  .Switch--info {
     display: flex;
     align-items: center;
     gap: 4px;
 
     .Switch--knob {
+      display: flex;
       width: var(--switch-width);
       padding: var(--switch-padding);
       border-radius: var(--switch-radius);
