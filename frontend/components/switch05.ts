@@ -24,19 +24,13 @@ function Switch({
   showOnOffText = false,
   children,
 }: SwitchProps) {
-  let switchText: "ON" | "OFF" | null = "OFF";
+  let switchText: "ON" | "OFF" | null = !showOnOffText ? null : active ? "ON" : "OFF";
 
-  if (active) {
-    switchText = "ON";
+  let switchTextNode = null;
+
+  if (switchText) {
+    switchTextNode = h("span", { className: "Switch--text", "aria-hidden": true }, switchText);
   }
-
-  if (!showOnOffText) {
-    switchText = null;
-  }
-
-  const switchTextNode = switchText
-    ? h("span", { className: "Switch--text", "aria-hidden": true }, switchText)
-    : null;
 
   return h(
     "div",
