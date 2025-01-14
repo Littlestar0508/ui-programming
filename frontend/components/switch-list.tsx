@@ -1,19 +1,33 @@
 import React from "../lib/react.js";
-import Switch from "./switch.tsx";
 import type { List } from "../types/list.ts";
+import Switch from "./switch.tsx";
 
-// HTML 표준 목록 요소(ul, ol, dl)
 interface SwitchListProps {
   items: List;
 }
 
 function SwitchList(props: SwitchListProps) {
   // 리스트 렌더링 02
-  // Array.prototype.map (O) : 반환값 존재
-  // Array.prototype.forEach(X) : 반환 값 X
+  // Array.prototype.map (O) : 새로운 배열 반환
+  // Array.prototype.forEach (X) : undefined
 
-  const renderListItmes = props.items.map((item) => {
-    // React.ReactElement[] 반환 => React Children
+  return (
+    <ul
+      className="SwitchList"
+      style={{
+        display: "flex",
+        flexFlow: "column",
+        gap: 12,
+      }}
+    >
+      {renderListItems(props.items)}
+    </ul>
+  );
+}
+
+const renderListItems = (items: List): React.ReactElement[] => {
+  return items.map((item) => {
+    // React.ReactElement[] 반환 === React Children
     return (
       <li>
         <Switch
@@ -27,12 +41,6 @@ function SwitchList(props: SwitchListProps) {
       </li>
     );
   });
-
-  return (
-    <ul className="SwitchList" style={{ display: "flex", flexFlow: "column", gap: 12 }}>
-      {renderListItmes}
-    </ul>
-  );
-}
+};
 
 export default SwitchList;
