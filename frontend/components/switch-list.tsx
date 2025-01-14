@@ -6,30 +6,29 @@ interface SwitchListProps {
   items: List;
 }
 
+const switchStyles = {
+  display: "flex",
+  flexFlow: "column",
+  gap: 12,
+};
+
 function SwitchList(props: SwitchListProps) {
   // 리스트 렌더링 02
   // Array.prototype.map (O) : 새로운 배열 반환
   // Array.prototype.forEach (X) : undefined
 
   return (
-    <ul
-      className="SwitchList"
-      style={{
-        display: "flex",
-        flexFlow: "column",
-        gap: 12,
-      }}
-    >
+    <ul className="SwitchList" style={switchStyles}>
       {renderListItems(props.items)}
     </ul>
   );
 }
 
 const renderListItems = (items: List): React.ReactElement[] => {
-  return items.map((item) => {
+  return items.map((item, index) => {
     // React.ReactElement[] 반환 === React Children
     return (
-      <li>
+      <li key={index}>
         <Switch
           active={item.active}
           disabled={item.disabled}
