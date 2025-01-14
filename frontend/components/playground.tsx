@@ -1,190 +1,52 @@
 import React from "../lib/react.js";
 
-/*
-  학습 주요 주제
-
-  - 순수 함수
-    - React 컴포넌트는 항상 순수한 것으로 간주
-  - 리스트 렌더링
-    - 대부분 for문 보다는 map 메서드 활용
-    - 리스트 렌더링 시, key 속성 필히 필요 (정확하게, 빠르게, 효과적으로 렌더링 하기 위해)
-    - key 속성은 형제 간에 고유해야 함
-  - 사이드 이펙트 (부수 효과)
-    - 부수 효과란?
-      - 리액트 렌더링 프로세스와 관련없는 일들
-      - 실제 DOM 객체 접근/조작
-      - 네트워크 통신(서버에 요청/응답)
-*/
-
-/* 상위(부모) 컴포넌트 -------------------------------------------------------------- */
-
-type ListItem = {
-  id: string;
-  subject: string;
-};
-
-const END_POINT = "https://my-json-server.typicode.com/yamoo9/assets/vowels";
-
-// -------------------------------------------------------------
-// 리액트 렌더링 프로세스
-// React (순수!!!!!!!)
-//  React Component -> 부수효과X -> 리액트 엘리먼트 생성 -> 엘리먼트 트리 형성(Virtual DOM) -> 엘리먼트 트리 ->
-// React DOM
-//  ReactDOM 렌더링 -> 실제 DOM 커밋(commit)
-// 웹 브라우저
-//  DOM 플로우(flow) 형성 & 페인팅(painting)
-// 웹 애플리케이션 인터페이스 (부수 효과 ~~~~~)
-//  사용자 상호작용(인터랙션)
-//  UI 요소에 접근/조작 (변경)
+// let renderCount: number = 0;
 
 export default function Playground() {
-  const items: ListItem[] = [
-    {
-      id: "react",
-      subject: "React",
-    },
-    {
-      id: "next.js",
-      subject: "Next.js",
-    },
-    {
-      id: "typescript",
-      subject: "TypeScript",
-    },
-    {
-      id: "react router",
-      subject: "React Router",
-    },
-  ];
+  // 함수 내부의 지역 변수는 함수 실행 이후에 [초기화] 된다.
+  // 컴포넌트 내부의 지역 변수일 뿐 상태(데이터)가 아님
+  let loveIcon = "💙";
 
-  // 2번째 부수효과(side effects)
-  // 네트워크 요청 / 응답(언제 요청이 완료될 지 알 수 없음)
-  // Fetch API / axios API
-  // fetch(END_POINT)
-  //   .then((response) => response.json())
-  //   .then((data) => console.log(data))
-  //   .catch((err) => console.error(err));
+  // 컴포넌트 상태(시간의 흐름에 따라 변경되어도 기억될 데이터) 관리 API
+  // React Hooks (함수 이름이 use로 시작함)
+  // React.useState API(함수)
+  // const loveIconState = React.useState("💙" /* 초기값 설정 */);
 
-  // -------------------------------------------------------------
-  // 부수 효과 (리액트 렌더링 프로세스와 관련 없는 일들)
-  // - 코드로 예측이 어려운 경우 (순수하지 않음)
-  // -------------------------------------------------------------
+  // 배열 구조분해 할당으로 useState 분리
+  // const [state, updater] = React.useState(initialValue);
+  const [loveIcons, setLoveIcons] = React.useState("💙");
 
-  // // DOM 엘리먼트에 접근해 스타일을 조작 (명령형 프로그래밍)
-  // const listElement = document.querySelector<HTMLUListElement>('ul.unknown');
-
-  // // 타입 단언(Type Assertion)
-  // // (listElement as HTMLElement).style.cssText = `
-
-  // // 타입 네로윙(Type Narrowing)
-  // if (listElement) {
-  //   listElement.style.cssText = `
-  //     margin: 20px;
-  //     border: 4px solid rgba(0 0 0 / 15%);
-  //     padding-inline-start: 0;
-  //     list-style: none;
-  //   `;
-  // }
-
-  // -------------------------------------------------------------
-  // 부수 효과를 발생시킬 수 있는 곳은?
-  // 1. 이벤트 핸들러 (함수) -> 작동 시점 (이벤트 발생 시: 이벤트 발생 주체 => 사용자)
-
-  const handleDeleteList = () => {
-    // 1. DOM에서 .Playground 엘리먼트 찾기
-    // 2. .Playground 엘리먼트 내부에서 .List 엘리먼트를 찾아 DOM 트리에서 삭제
-
-    const playgroundElement = document.querySelector<HTMLDivElement>(".Playground");
-
-    if (playgroundElement) {
-      const listElement = playgroundElement.querySelector<HTMLUListElement>(".List");
-
-      if (listElement) {
-        listElement.remove();
-      }
-    }
-  };
-
-  const handleRenderingListFromAsyncData = async () => {
-    return fetch(END_POINT)
-      .then((response) => response.json())
-      .then((data) => {
-        const reactElement = document.getElementById("react");
-
-        reactElement?.insertAdjacentHTML(
-          "beforeend",
-          /* html */
-          `<ul>
-            ${data
-              .map((item: { name: string }) => {
-                return /* html */ `<li>${item.name}</li>`;
-              })
-              .join("")}
-          </ul>`
-        );
-      })
-      .catch((error) => console.error(error));
-  };
-
-  const handleChangeListStyles = () => {
-    // DOM 엘리먼트에 접근해 스타일을 조작 (명령형 프로그래밍)
-    const listElement = document.querySelector<HTMLUListElement>("ul.List");
-
-    // 타입 단언(Type Assertion)
-    // (listElement as HTMLElement).style.cssText = `
-
-    // 타입 네로윙(Type Narrowing)
-    if (listElement) {
-      listElement.style.cssText = `
-        margin: 20px;
-        border: 4px solid rgba(0 0 0 / 15%);
-        padding-inline-start: 0;
-        list-style: none;
-      `;
-    }
-  };
-
+  // 리액트 화면에 렌더링 1회
+  // 개발 중 StrictMode를 사용하면 2회 렌더링
+  // console.log(`렌더링 횟수 : ${++renderCount}회`);
   return (
     <div className="Playground">
-      <button type="button" onClick={handleChangeListStyles}>
-        change list styles
+      <h1>플레이그라운드</h1>
+      <p className="message">I LOVE KOREA{loveIcons}</p>
+      <button
+        type="button"
+        aria-label="하트"
+        onClick={() => {
+          setLoveIcons(loveIcons + "💙");
+        }}
+      >
+        <svg
+          fill="none"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          width="24"
+          height="24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+          />
+        </svg>
       </button>
-      <List list={items} />
     </div>
   );
-}
-
-/* 하위(자식) 컴포넌트 -------------------------------------------------------------- */
-
-interface ListProps {
-  list: ListItem[];
-}
-
-function List({ list }: ListProps) {
-  return (
-    <ul
-      className="List"
-      // style={{
-      //   margin: 20,
-      //   border: '4px solid rgba(0 0 0 / 15%)',
-      //   listStyle: 'none',
-      //   paddingInlineStart: 0,
-      // }}
-    >
-      {list.map((item) => (
-        <ListItem key={item.id}>{item.subject}</ListItem>
-      ))}
-    </ul>
-  );
-}
-
-/* 하위(자손) 컴포넌트 -------------------------------------------------------------- */
-
-interface ListItemProps {
-  key?: string;
-  children?: React.ReactNode;
-}
-
-function ListItem(props: ListItemProps) {
-  return <li>{props.children}</li>;
 }
