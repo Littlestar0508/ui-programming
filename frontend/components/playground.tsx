@@ -23,6 +23,20 @@ type ListItem = {
   subject: string;
 };
 
+const END_POINT = "https://my-json-server.typicode.com/yamoo9/assets/vowels";
+
+// -------------------------------------------------------------
+// 리액트 렌더링 프로세스
+// React (순수!!!!!!!)
+//  React Component -> 부수효과X -> 리액트 엘리먼트 생성 -> 엘리먼트 트리 형성(Virtual DOM) -> 엘리먼트 트리 ->
+// React DOM
+//  ReactDOM 렌더링 -> 실제 DOM 커밋(commit)
+// 웹 브라우저
+//  DOM 플로우(flow) 형성 & 페인팅(painting)
+// 웹 애플리케이션 인터페이스 (부수 효과 ~~~~~)
+//  사용자 상호작용(인터랙션)
+//  UI 요소에 접근/조작 (변경)
+
 export default function Playground() {
   const items: ListItem[] = [
     {
@@ -42,6 +56,14 @@ export default function Playground() {
       subject: "React Router",
     },
   ];
+
+  // 2번째 부수효과(side effects)
+  // 네트워크 요청 / 응답(언제 요청이 완료될 지 알 수 없음)
+  // Fetch API / axios API
+  // fetch(END_POINT)
+  //   .then((response) => response.json())
+  //   .then((data) => console.log(data))
+  //   .catch((err) => console.error(err));
 
   // -------------------------------------------------------------
   // 부수 효과 (리액트 렌더링 프로세스와 관련 없는 일들)
@@ -67,6 +89,42 @@ export default function Playground() {
   // -------------------------------------------------------------
   // 부수 효과를 발생시킬 수 있는 곳은?
   // 1. 이벤트 핸들러 (함수) -> 작동 시점 (이벤트 발생 시: 이벤트 발생 주체 => 사용자)
+
+  const handleDeleteList = () => {
+    // 1. DOM에서 .Playground 엘리먼트 찾기
+    // 2. .Playground 엘리먼트 내부에서 .List 엘리먼트를 찾아 DOM 트리에서 삭제
+
+    const playgroundElement = document.querySelector<HTMLDivElement>(".Playground");
+
+    if (playgroundElement) {
+      const listElement = playgroundElement.querySelector<HTMLUListElement>(".List");
+
+      if (listElement) {
+        listElement.remove();
+      }
+    }
+  };
+
+  const handleRenderingListFromAsyncData = async () => {
+    return fetch(END_POINT)
+      .then((response) => response.json())
+      .then((data) => {
+        const reactElement = document.getElementById("react");
+
+        reactElement?.insertAdjacentHTML(
+          "beforeend",
+          /* html */
+          `<ul>
+            ${data
+              .map((item: { name: string }) => {
+                return /* html */ `<li>${item.name}</li>`;
+              })
+              .join("")}
+          </ul>`
+        );
+      })
+      .catch((error) => console.error(error));
+  };
 
   const handleChangeListStyles = () => {
     // DOM 엘리먼트에 접근해 스타일을 조작 (명령형 프로그래밍)
