@@ -30,18 +30,22 @@ function App(): React.ReactNode {
 
     renderListItemElements.push(
       // React Element
-      <section>
-        <h2>{listItem.children}</h2>
-        <p>active : {listItem.active?.toString()}</p>
-        <p>disabled : {listItem.disabled?.toString()}</p>
-        <p>showOnOffText : {listItem.showOnOffText?.toString()}</p>
-        <p>onToggle : {listItem.onToggle?.toString()}</p>
-      </section>
+      <Switch
+        active={listItem.active}
+        disabled={listItem.disabled}
+        showOnOffText={listItem.showOnOffText}
+        onToggle={listItem.onToggle}
+      >
+        {listItem.children}
+      </Switch>
     );
   }
 
-  // React Children(React Element List)
-  console.log({ renderListItemElements });
+  renderListItemElements.push(
+    <Switch active showOnOffText>
+      REAd a BOOK
+    </Switch>
+  );
 
   return (
     <div lang="en" style={appStyles}>
