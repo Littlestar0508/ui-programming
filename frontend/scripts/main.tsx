@@ -1,4 +1,6 @@
-import React from "../lib/react.js";
+// @ts-nocheck
+import React, { StrictMode } from "../lib/react.js";
+// const { StrictMode } = React.StrictMode;
 import ReactDOM from "../lib/react-dom/client.js";
 import App from "./app.tsx";
 
@@ -10,5 +12,9 @@ if (!root) {
   // const app = React.createElement(App);
   // const app = <App></App>;
   // const app = <App />;
-  ReactDOM.createRoot(root).render(<App />);
+  ReactDOM.createRoot(root).render(
+    <StrictMode>
+      <App />
+    </StrictMode>
+  );
 }
