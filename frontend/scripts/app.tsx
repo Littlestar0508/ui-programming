@@ -1,12 +1,29 @@
 import React from "../lib/react.js";
 import Switch from "../components/switch.tsx";
 
-const appStyles = {
-  display: "flex",
-  flexFlow: "column",
-  gap: 12,
-  padding: 20,
-};
+/* -------------------------------------------------------------------------- */
+/*                                    순수 함수                                */
+/* -------------------------------------------------------------------------- */
+
+// 순수함이란? 어떤 기준으로 구분하는가?
+// 순수하다란 의미는 '함수의 실행 결과 예측 가능' 이라는 말
+
+// multiply 함수는 순수한가?
+
+function multiply(x: number, y: number): number {
+  return x * y;
+}
+
+// 이 함수의 실행 결과는 항상 20이 나온다(예측 가능 : pure)
+multiply(4, 5);
+
+// query함수는 순수한가?
+function query(selector: string, context = document): HTMLElement | null {
+  return context.querySelector(selector);
+}
+
+// 이 함수의 실행 결과는 예측 가능한가요? 예측 가능하지 않다(순수하지 않다 : impure)
+query(".yamoo9");
 
 function App(): React.ReactNode {
   const handleSwitch1Toggle = () => console.log("clicked switch 1");
@@ -24,5 +41,12 @@ function App(): React.ReactNode {
     </div>
   );
 }
+
+const appStyles = {
+  display: "flex",
+  flexFlow: "column",
+  gap: 12,
+  padding: 20,
+};
 
 export default App;
