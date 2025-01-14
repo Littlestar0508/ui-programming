@@ -73,3 +73,14 @@ function anotherCalcListLength(list: any[]): number {
 
 // 예측 불가능
 anotherCalcListLength([1, 2, 3]);
+
+/* -------------------------------------------------------------------------- */
+/*                         함수가 순수한지 순수하지 않은지 확인 하는 방법         */
+/* -------------------------------------------------------------------------- */
+
+// 동일 입력인 함수를 2번 실행했을 때, 동일 출력이 나온다면 '순수'하다
+
+const result1 = calcListLength([1, 2, 3]);
+const result2 = calcListLength([1, 2, 3]);
+
+console.log(Object.is(result1, result2));
