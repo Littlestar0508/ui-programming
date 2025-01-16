@@ -19,43 +19,45 @@ function SwitchList({ items }: SwitchListProps) {
   // React Hooks API(React.useState)
   // true or false 상태
 
-  // [관심사] 과제 제출상태 & 상태 업데이트 로직
-  const [submission, setSubmission] = React.useState(false);
+  // 좀 더 복잡한 구조의 상태(객체)
+  const [state, setState] = React.useState({
+    submission: false,
+    review: false,
+    level: false,
+  });
+  // 각 상태 업데이트 로직
   const handleToggleSubmission = () => {
-    // 상태 업데이트 (React에 요청: trigger a render)
-    const nextSubmission = !submission; // false <=> true
-    setSubmission(nextSubmission);
+    // setState() 함수에 새 데이터 전달(기존 데이터 덮어씀)
+    // 기존 데이터가 사라지는 것을 원치 않는다
+    // 객체 합성 패턴
+    const nextState = { ...state, submission: !state.submission };
+    setState(nextState);
   };
-
-  // [관심사] 복습 수행 상태 & 상태 업데이트 로직
-  const [review, setReview] = React.useState(false);
   const handleToggleReview = () => {
-    // 상태 업데이트 (React에 요청: trigger a render)
-    const nextReview = !review; // false <=> true
-    setReview(nextReview);
+    // setState() 함수에 새 데이터 전달(기존 데이터 덮어씀)
+    const nextState = { ...state, review: !state.review };
+    setState(nextState);
   };
-
-  // [관심사] 나의 수준 파악 상태 & 상태 업데이트 로직
-  const [level, setLevel] = React.useState(false);
   const handleToggleLevel = () => {
-    const nextLevel = !level;
-    setLevel(nextLevel);
+    // setState() 함수에 새 데이터 전달(기존 데이터 덮어씀)
+    const nextState = { ...state, level: !state.level };
+    setState(nextState);
   };
 
   return (
     <ul className="SwitchList" style={switchStyles}>
       <li>
-        <Switch active={submission} onToggle={handleToggleSubmission}>
+        <Switch active={state.submission} onToggle={handleToggleSubmission}>
           과제 제출
         </Switch>
       </li>
       <li>
-        <Switch active={review} onToggle={handleToggleReview}>
+        <Switch active={state.review} onToggle={handleToggleReview}>
           유의미한 복습 수행
         </Switch>
       </li>
       <li>
-        <Switch active={level} onToggle={handleToggleLevel}>
+        <Switch active={state.level} onToggle={handleToggleLevel}>
           정확한 나의 수준 진단
         </Switch>
       </li>
