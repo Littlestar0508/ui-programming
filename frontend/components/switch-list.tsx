@@ -25,39 +25,46 @@ function SwitchList({ items }: SwitchListProps) {
     review: false,
     level: false,
   });
-  // 각 상태 업데이트 로직
-  const handleToggleSubmission = () => {
-    // setState() 함수에 새 데이터 전달(기존 데이터 덮어씀)
-    // 기존 데이터가 사라지는 것을 원치 않는다
-    // 객체 합성 패턴
-    const nextState = { ...state, submission: !state.submission };
-    setState(nextState);
-  };
-  const handleToggleReview = () => {
-    // setState() 함수에 새 데이터 전달(기존 데이터 덮어씀)
-    const nextState = { ...state, review: !state.review };
-    setState(nextState);
-  };
-  const handleToggleLevel = () => {
-    // setState() 함수에 새 데이터 전달(기존 데이터 덮어씀)
-    const nextState = { ...state, level: !state.level };
+  // // 각 상태 업데이트 로직
+  // const handleToggleSubmission = () => {
+  //   // setState() 함수에 새 데이터 전달(기존 데이터 덮어씀)
+  //   // 기존 데이터가 사라지는 것을 원치 않는다
+  //   // 객체 합성 패턴
+  //   const nextState = { ...state, submission: !state.submission };
+  //   setState(nextState);
+  // };
+  // const handleToggleReview = () => {
+  //   // setState() 함수에 새 데이터 전달(기존 데이터 덮어씀)
+  //   const nextState = { ...state, review: !state.review };
+  //   setState(nextState);
+  // };
+  // const handleToggleLevel = () => {
+  //   // setState() 함수에 새 데이터 전달(기존 데이터 덮어씀)
+  //   const nextState = { ...state, level: !state.level };
+  //   setState(nextState);
+  // };
+
+  const handleStateToggle = (name: string) => {
+    // JS 객체는 [계산된] 속성을 가질 수 있다
+    let stateName = name;
+    const nextState = { ...state, [stateName]: !state[stateName] };
     setState(nextState);
   };
 
   return (
     <ul className="SwitchList" style={switchStyles}>
       <li>
-        <Switch active={state.submission} onToggle={handleToggleSubmission}>
+        <Switch active={state.submission} onToggle={() => handleStateToggle("submission")}>
           과제 제출
         </Switch>
       </li>
       <li>
-        <Switch active={state.review} onToggle={handleToggleReview}>
+        <Switch active={state.review} onToggle={() => handleStateToggle("review")}>
           유의미한 복습 수행
         </Switch>
       </li>
       <li>
-        <Switch active={state.level} onToggle={handleToggleLevel}>
+        <Switch active={state.level} onToggle={() => handleStateToggle("level")}>
           정확한 나의 수준 진단
         </Switch>
       </li>
