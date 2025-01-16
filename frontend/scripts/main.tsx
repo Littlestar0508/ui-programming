@@ -1,6 +1,6 @@
 import React from "../lib/react.js";
 import ReactDOM from "../lib/react-dom/client.js";
-import Playground from "../components/playground.tsx";
+import Playground from "./app.tsx";
 
 const root = document.getElementById("react");
 
