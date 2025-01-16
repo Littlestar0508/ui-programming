@@ -15,89 +15,83 @@ const switchStyles = {
 };
 
 function SwitchList({ items }: SwitchListProps) {
-  // React 컴포넌트 상태관리
-  // React Hooks API(React.useState)
-  // true or false 상태
+  // 전달된 속성(props) -> 제어할 상태(state)로 전환
+  // 사용자와 상호작용(interaction)하는 인터페이스(UI) 설계 가능
 
-  // 좀 더 복잡한 구조의 상태(객체)
-  const [state, setState] = React.useState({
-    submission: false,
-    review: false,
-    level: false,
+  // React 컴포넌트의 상태는 훅(Hooks) API 사용
+  // [상태 선언] React.useState(initialValue)
+
+  const [state, setState] = React.useState(() => {
+    // 컴포넌트가 초기 생성될 때 1회 실행
+    // 컴포넌트의 상태로 사용할 초깃값 반환
+    // 단, 개발 모드에서는 StrictMode 사용 시 2회 호출됨
+    // 배포 시, 1회만 실행
+    // 초기화 함수에서 할 일
+    // 속성(읽기 전용) -> 상태(컴포넌트 안에서 일기/쓰기 가능)
+    // console.log({ props: { items } });
+
+    return items.map(({ onToggle, ...restProperties }) => ({
+      active: false,
+      disabled: false,
+      ...restProperties,
+    }));
   });
-  // // 각 상태 업데이트 로직
-  // const handleToggleSubmission = () => {
-  //   // setState() 함수에 새 데이터 전달(기존 데이터 덮어씀)
-  //   // 기존 데이터가 사라지는 것을 원치 않는다
-  //   // 객체 합성 패턴
-  //   const nextState = { ...state, submission: !state.submission };
-  //   setState(nextState);
-  // };
-  // const handleToggleReview = () => {
-  //   // setState() 함수에 새 데이터 전달(기존 데이터 덮어씀)
-  //   const nextState = { ...state, review: !state.review };
-  //   setState(nextState);
-  // };
-  // const handleToggleLevel = () => {
-  //   // setState() 함수에 새 데이터 전달(기존 데이터 덮어씀)
-  //   const nextState = { ...state, level: !state.level };
-  //   setState(nextState);
-  // };
 
-  const handleStateToggle = (name: string) => {
-    // JS 객체는 [계산된] 속성을 가질 수 있다
-    let stateName = name;
-    const nextState = { ...state, [stateName]: !state[stateName] };
+  // 하나의 함수를 사용해 사용자의 액션을 감지하여 상태 업데이트 로직 작성
+  const handleToggleState = (selectedID: string) => {
+    // 무엇을 전달받을 것인가?
+    // 어떻게 개별 항목을 식별할 것인가
+
+    const nextState = state.map((item: { id: string; children: string; active: boolean }) => {
+      // 조건 처리
+      // 사용자가 누른 스위치의 id와 일치하는 item인 경우 => item.active 반전
+      if (selectedID === item.id) {
+        return {
+          ...item,
+          active: !item.active,
+        };
+      }
+
+      // 그렇지 않은 경우 => 그대로 item반환
+      return item;
+    });
+    // 다음 렌더링 시 사용될 상태 값 제공
+    // 새로운 다음 상태 = 기존 상태 배열을 토대로 새로운 다음 상태 배열을 만든다
+
+    // 리액트에게 렌더링 요청
     setState(nextState);
   };
 
+  // 상태(State) 데이터 순환 마크업 생성
   return (
     <ul className="SwitchList" style={switchStyles}>
-      <li>
-        <Switch active={state.submission} onToggle={() => handleStateToggle("submission")}>
-          과제 제출
-        </Switch>
-      </li>
-      <li>
-        <Switch active={state.review} onToggle={() => handleStateToggle("review")}>
-          유의미한 복습 수행
-        </Switch>
-      </li>
-      <li>
-        <Switch active={state.level} onToggle={() => handleStateToggle("level")}>
-          정확한 나의 수준 진단
-        </Switch>
-      </li>
-      {/* 조건부 표시(Conditional Display) */}
-      {items.map((item) => (
-        <li key={item.id} hidden>
-          <Switch
-            active={item.active}
-            disabled={item.disabled}
-            showOnOffText={item.showOnOffText}
-            onToggle={item.onToggle}
-          >
-            {item.children}
+      {state.map(({ id, active, children }) => (
+        <li key={id}>
+          <Switch active={active} onToggle={() => handleToggleState(id)}>
+            {children}
           </Switch>
         </li>
       ))}
-
-      {/* 조건부 렌더링(Conditional Rendering) */}
-      {false &&
-        items.map((item) => (
-          <li key={item.id}>
-            <Switch
-              active={item.active}
-              disabled={item.disabled}
-              showOnOffText={item.showOnOffText}
-              onToggle={item.onToggle}
-            >
-              {item.children}
-            </Switch>
-          </li>
-        ))}
     </ul>
   );
+
+  //  속성(props) 데이터 순환 마크업 생성
+  // return (
+  //   <ul className="SwitchList" style={switchStyles}>
+  //     {items.map((item) => (
+  //       <li key={item.id}>
+  //         <Switch
+  //           active={item.active}
+  //           disabled={item.disabled}
+  //           showOnOffText={item.showOnOffText}
+  //           onToggle={item.onToggle}
+  //         >
+  //           {item.children}
+  //         </Switch>
+  //       </li>
+  //     ))}
+  //   </ul>
+  // );
 }
 
 export default SwitchList;
