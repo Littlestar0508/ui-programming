@@ -26,34 +26,44 @@ function SwitchList({ items }: SwitchListProps) {
         <Switch
           active={submission}
           onToggle={() => {
-            // 상태 업데이트 (React에 요청 : trigger a render)
-            setSubmission(!submission);
+            // 상태 업데이트 (React에 요청: trigger a render)
+            const nextSubmission = !submission; // false <=> true
+            setSubmission(nextSubmission);
           }}
         >
-          상태 변경
+          과제 제출
         </Switch>
       </li>
-      {renderListItems(items)}
+      {/* 조건부 표시(Conditional Display) */}
+      {items.map((item) => (
+        <li key={item.id} hidden>
+          <Switch
+            active={item.active}
+            disabled={item.disabled}
+            showOnOffText={item.showOnOffText}
+            onToggle={item.onToggle}
+          >
+            {item.children}
+          </Switch>
+        </li>
+      ))}
+
+      {/* 조건부 렌더링(Conditional Rendering) */}
+      {false &&
+        items.map((item) => (
+          <li key={item.id}>
+            <Switch
+              active={item.active}
+              disabled={item.disabled}
+              showOnOffText={item.showOnOffText}
+              onToggle={item.onToggle}
+            >
+              {item.children}
+            </Switch>
+          </li>
+        ))}
     </ul>
   );
 }
-
-const renderListItems = (items: List): React.ReactElement[] => {
-  return items.map((item) => {
-    // React.ReactElement[] 반환 === React Children
-    return (
-      <li key={item.id}>
-        <Switch
-          active={item.active}
-          disabled={item.disabled}
-          showOnOffText={item.showOnOffText}
-          onToggle={item.onToggle}
-        >
-          {item.children}
-        </Switch>
-      </li>
-    );
-  });
-};
 
 export default SwitchList;
