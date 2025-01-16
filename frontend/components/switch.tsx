@@ -19,16 +19,6 @@ function Switch({
 }: SwitchProps) {
   let switchText: SwitchText = !showOnOffText ? null : active ? "ON" : "OFF";
 
-  // let switchTextNode = null;
-
-  // if (switchText) {
-  //   switchTextNode = (
-  //     <span className="Switch--text" aria-hidden={true}>
-  //       {switchText}
-  //     </span>
-  //   );
-  // }
-
   const handleToggle = () => {
     if (disabled) return;
     onToggle?.();
@@ -57,12 +47,6 @@ function Switch({
       <span className="Switch--label">{children}</span>
       <span className="Switch--info">
         <span className="Switch--knob" />
-        {/* 인터폴레이션(interpolation): 보간(사이 채움)법 */}
-
-        {/* 함수 컴포넌트 바디(몸체) 내부에 변수를 설정해 데이터 연결 */}
-        {/* {switchTextNode} */}
-
-        {/* JSX 구문 내부에 인라인 삽입 */}
         {switchText && (
           <span className="Switch--text" aria-hidden={true}>
             {switchText}
