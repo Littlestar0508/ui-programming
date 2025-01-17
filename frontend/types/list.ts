@@ -1,7 +1,7 @@
-import React from "../lib/react.js";
+import React from '../lib/react.js';
 
 export type ListItem = {
-  id?: string;
+  id: string;
   active?: boolean;
   disabled?: boolean;
   showOnOffText?: boolean;
