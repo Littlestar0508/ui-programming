@@ -1,10 +1,15 @@
-import React from '../lib/react.js';
+import React from "../lib/react.js";
 
 /* -------------------------------------------------------------------------- */
 /* React 규칙                                                                  */
 /* -------------------------------------------------------------------------- */
 
 export default function RulesOfReact() {
+  if (true) {
+    const [name, setName] = React.useState("yamoo9");
+    console.log(name, typeof setName);
+  }
+
   return (
     <div className="RulesOfReact">
       <ReactClassComponent>
@@ -28,6 +33,10 @@ class ReactClassComponent extends React.Component {
 
   render() {
     const dateInfo = getDateInfo();
+
+    // 에러 발생
+    // const [name, setName] = React.useState("yamoo9");
+    // console.log(name, typeof setName);
 
     return (
       <section>
@@ -61,9 +70,7 @@ function ReactFunctionComponent({ dateInfo }: { dateInfo: DateInfo }) {
   return (
     <>
       <p>규칙을 준수하지 않으면 앱에 문제가 발생합니다.</p>
-      <footer>
-        {dateInfo && <time dateTime={dateInfo.iso}>{dateInfo.ko}</time>}
-      </footer>
+      <footer>{dateInfo && <time dateTime={dateInfo.iso}>{dateInfo.ko}</time>}</footer>
     </>
   );
 }
@@ -71,8 +78,12 @@ function ReactFunctionComponent({ dateInfo }: { dateInfo: DateInfo }) {
 // 일반 함수 -----------------------------------------------------------------------
 
 function getDateInfo(): DateInfo {
+  // 에러 발생
+  // const [name, setName] = React.useState("yamoo9");
+  // console.log(name, typeof setName);
+
   const d = new Date();
-  const [year, month, date] = d.toLocaleDateString().split('.');
+  const [year, month, date] = d.toLocaleDateString().split(".");
   return {
     iso: d.toISOString(),
     ko: `${year}년 ${month.trim()}월 ${date.trim()}일`,
