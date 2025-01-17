@@ -1,4 +1,5 @@
 import React from "../lib/react.js";
+import withFormState from "./higher-order-component.tsx";
 
 /* -------------------------------------------------------------------------- */
 /* Render Props & Higher-Order Component                                      */
@@ -7,20 +8,8 @@ import React from "../lib/react.js";
 export default function RenderPropsAndHOC() {
   return (
     <div className="RenderPropsAndHOC">
-      <ReactClassComponent>
-        {/* render props 패턴을 사용해 하위 컴포넌트에 dateInfo 정보를 공유합니다. */}
-        {/* JSX === React.ReactElement */}
-        {/* 꼭 자식인 children 속성(prop)이 JSX여야 할까? */}
-        {/* 꼭 JSX일 필요는 없다. 그러면 JavaScript 객체 또는 함수 데이터는 자식이 될 수 없지만... */}
-        {/* 만약 자식으로 전달된 함수가 실행되어 그 결과가 JSX를 반환한다면? 가능합니다! */}
-        {
-          /* render */ (/* 전달된 데이터 받기 가능 */ dateInfo: DateInfo) => {
-            return <ReactFunctionComponent dateInfo={{ iso: dateInfo.iso, ko: dateInfo.ko }} />;
-          }
-        }
-        {/* <ReactFunctionComponent dateInfo={{ iso: "", ko: "" }} /> */}
-      </ReactClassComponent>
-      <AnotherReactClassComponent />
+      <HOC1 render={(dateInfo: DateInfo) => <ReactFunctionComponent dateInfo={dateInfo} />} />
+      <HOC2 />
     </div>
   );
 }
@@ -28,40 +17,145 @@ export default function RenderPropsAndHOC() {
 // 클래스 컴포넌트 --------------------------------------------------------------------
 
 class ReactClassComponent extends React.Component {
-  // this.props지정
   props: {
-    children: React.ReactNode;
+    render?: (dateInfo: DateInfo) => React.ReactElement;
+    onUpdate: () => void;
+    onChange: (e: React.ReactInputEvent) => void;
+    formState: {
+      email: string;
+      password: string;
+    };
   };
+
+  setState: (nextState: Partial<State>) => void;
 
   render() {
     const dateInfo = getDateInfo();
+    const { formState, onChange, render, onUpdate } = this.props;
 
-    // render props 패턴을 사용해 dateInfo 정보를 children 컴포넌트에 전달하세요.
+    console.log(formState);
+
     return (
       <section>
         <h2>React 규칙 준수</h2>
-        {this.props.children?.(dateInfo)}
+        {render?.(dateInfo)}
+        <form onSubmit={onUpdate} style={formStyles}>
+          <div style={formControlStyles}>
+            <label htmlFor="email">이메일</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="user@company.io"
+              value={formState.email}
+              onChange={(e: React.ReactInputEvent) => onChange(e)}
+            />
+          </div>
+          <div style={formControlStyles}>
+            <label htmlFor="password">패스워드</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="영어, 숫자 조합 6자리 이상"
+              value={formState.password}
+              onChange={(e: React.ReactInputEvent) => onChange(e)}
+            />
+          </div>
+          <button type="submit">제출</button>
+        </form>
       </section>
     );
   }
+
+  handleChange = (e: React.ReactInputEvent) => {
+    const stateName = e.target.name;
+
+    this.setState({
+      [stateName]: e.target.value.trim(),
+    });
+  };
+
+  handleUpdateFormData = (e: Event) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    console.log(formData.get("email"));
+  };
+}
+
+const HOC1 = withFormState(ReactClassComponent);
+
+/* -------------------------------------------------------------------------- */
+
+interface Props {
+  children: React.ReactNode;
+  onUpdate: () => void;
+  onChange: (e: React.ReactInputEvent) => void;
+  formState: {
+    email: string;
+    password: string;
+  };
+}
+
+interface State {
+  email: string;
+  password: string;
 }
 
 class AnotherReactClassComponent extends React.Component {
-  props: {
-    children?: React.ReactNode;
-  };
+  props: Props;
 
   render() {
-    const { children } = this.props;
+    const { children, formState, onUpdate, onChange } = this.props;
 
     return (
       <section>
         <h2>고차 컴포넌트를 사용해 컴포넌트 간 로직 공유</h2>
+        <form onSubmit={onUpdate} style={formStyles}>
+          <div style={formControlStyles}>
+            <label htmlFor="hoc-email">이메일</label>
+            <input
+              type="email"
+              name="email"
+              id="hoc-email"
+              placeholder="user@company.io"
+              value={formState.email}
+              onChange={(e: React.ReactInputEvent) => onChange(e)}
+            />
+          </div>
+          <div style={formControlStyles}>
+            <label htmlFor="hoc-password">패스워드</label>
+            <input
+              type="password"
+              name="password"
+              id="hoc-password"
+              placeholder="영어, 숫자 조합 6자리 이상"
+              value={formState.password}
+              onChange={(e: React.ReactInputEvent) => onChange(e)}
+            />
+          </div>
+          <button type="submit">제출</button>
+        </form>
         {children}
       </section>
     );
   }
 }
+
+// 고차 컴포넌트 = withFormState 고차 함수 실행 결과
+const HOC2 = withFormState(AnotherReactClassComponent);
+
+const formStyles = {
+  display: "flex",
+  flexFlow: "column",
+  gap: 8,
+};
+
+const formControlStyles = {
+  display: "flex",
+  alignItems: "center",
+  gap: 6,
+};
 
 // 함수 컴포넌트 --------------------------------------------------------------------
 
